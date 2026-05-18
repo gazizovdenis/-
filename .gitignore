@@ -2,3 +2,13 @@
 Thumbs.db
 desktop.ini
 *.tmp
+
+# Аудио/видео файлы — хранятся локально
+*.m4a
+*.mp3
+*.mp4
+*.wav
+*.ogg
+
+# Локальные настройки Claude Code
+.claude/settings.local.json
