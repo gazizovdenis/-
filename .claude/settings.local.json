@@ -1,7 +1,32 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "PowerShell(git push *)",
+      "PowerShell(ssh-keyscan *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(ssh-keygen *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(ffmpeg *)",
+      "PowerShell(python -c \"import faster_whisper; print\\('ok'\\)\" 2>&1)",
+      "PowerShell(python -c \"import whisper; print\\('whisper ok'\\)\" 2>&1; python -m whisper --help 2>&1 | Select-Object -First 2)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(pip install *)",
+      "PowerShell(Test-Path 'c:\\\\Users\\\\Denis\\\\Desktop\\\\result_tmp.json'; if \\(Test-Path 'c:\\\\Users\\\\Denis\\\\Desktop\\\\result_tmp.json'\\) { \\(Get-Item 'c:\\\\Users\\\\Denis\\\\Desktop\\\\result_tmp.json'\\).Length })",
+      "PowerShell(Test-Path 'c:\\\\Users\\\\Denis\\\\Desktop\\\\Система\\\\Хранилище\\\\raw\\\\02_Технопродукт\\\\Встречи\\\\2026-05-18_трекинг гипотез_transcript.md'; \\(Get-Item 'c:\\\\Users\\\\Denis\\\\Desktop\\\\Система\\\\Хранилище\\\\raw\\\\02_Технопродукт\\\\Встречи\\\\2026-05-18_трекинг гипотез_transcript.md'\\).Length)",
+      "PowerShell(python -c \"from huggingface_hub import HfFolder; print\\(HfFolder.get_token\\(\\)\\)\" 2>&1)",
+      "PowerShell(python -c \"from huggingface_hub import get_token; print\\(get_token\\(\\)\\)\" 2>&1)",
+      "Bash(pip show *)",
+      "Bash(pip install *)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\Denis\\\\Desktop\\\\Система\\\\scripts\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\Denis\\\\Desktop\\\\Система\\\\skills\\\\diarize-media\")",
+      "Bash(python -c ' *)",
+      "Bash(python *)",
+      "Bash(ffmpeg -version)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
