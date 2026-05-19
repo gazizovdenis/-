@@ -105,10 +105,11 @@ def main():
     from pyannote.audio import Pipeline
     import torch
     import soundfile as sf
+    from huggingface_hub import login
+    login(token=hf_token, add_to_git_credential=False)
 
     pipeline = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
-        token=hf_token,
     )
 
     # Если формат не поддерживается soundfile (m4a, aac и т.д.) — конвертируем в wav
