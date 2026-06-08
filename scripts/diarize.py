@@ -37,11 +37,12 @@ def assign_speakers(diarization, segments: list[dict]) -> list[dict]:
     """Сопоставляет каждый сегмент транскрипта со спикером по максимальному перекрытию."""
     from pyannote.core import Segment
 
+    annotation = getattr(diarization, "speaker_diarization", None) or getattr(diarization, "annotation", diarization)
     result = []
     for seg in segments:
         window = Segment(seg["start"], seg["end"])
         overlap: dict[str, float] = {}
-        for turn, _, speaker in diarization.itertracks(yield_label=True):
+        for turn, _, speaker in annotation.itertracks(yield_label=True):
             inter = window & turn
             if inter:
                 overlap[speaker] = overlap.get(speaker, 0) + inter.duration
@@ -118,7 +119,7 @@ def main():
         import subprocess
         import tempfile
         tmp_wav = Path(tempfile.mktemp(suffix=".wav"))
-        print(f"Конвертирую {suffix} → wav через ffmpeg...")
+        print(f"Конвертирую {suffix} -> wav через ffmpeg...")
         subprocess.run(
             ["ffmpeg", "-y", "-i", str(audio_path), "-ac", "1", "-ar", "16000", str(tmp_wav)],
             check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
@@ -153,8 +154,9 @@ def main():
         )
     else:
         # Нет транскрипта — просто сохраняем временны́е метки спикеров
+        annotation = getattr(diarization, "speaker_diarization", None) or getattr(diarization, "annotation", diarization)
         lines = [f"# Диаризация: {audio_path.name}", ""]
-        for turn, _, speaker in diarization.itertracks(yield_label=True):
+        for turn, _, speaker in annotation.itertracks(yield_label=True):
             h = int(turn.start) // 3600
             m = (int(turn.start) % 3600) // 60
             s = int(turn.start) % 60

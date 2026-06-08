@@ -1,0 +1,97 @@
+{
+ "name": "Итоги дня",
+ "type": "private_group",
+ "id": 5115906105,
+ "messages": [
+  {
+   "id": 361373,
+   "type": "service",
+   "date": "2026-05-17T22:38:46",
+   "date_unixtime": "1779039526",
+   "actor": "Denis Gazizov",
+   "actor_id": "user293720342",
+   "action": "create_group",
+   "title": "Итоги дня",
+   "members": [
+    "Denis Gazizov",
+    "Лерочка"
+   ],
+   "text": "",
+   "text_entities": []
+  },
+  {
+   "id": 361374,
+   "type": "service",
+   "date": "2026-05-17T22:38:50",
+   "date_unixtime": "1779039530",
+   "actor": "Denis Gazizov",
+   "actor_id": "user293720342",
+   "action": "remove_members",
+   "members": [
+    "Лерочка"
+   ],
+   "text": "",
+   "text_entities": []
+  },
+  {
+   "id": 361375,
+   "type": "message",
+   "date": "2026-05-17T22:40:37",
+   "date_unixtime": "1779039637",
+   "from": "Denis Gazizov",
+   "from_id": "user293720342",
+   "file": "voice_messages/audio_1@17-05-2026_22-40-37.ogg",
+   "file_size": 370437,
+   "media_type": "voice_message",
+   "mime_type": "audio/ogg",
+   "duration_seconds": 95,
+   "text": "",
+   "text_entities": []
+  },
+  {
+   "id": 361628,
+   "type": "message",
+   "date": "2026-05-18T23:10:10",
+   "date_unixtime": "1779127810",
+   "from": "Denis Gazizov",
+   "from_id": "user293720342",
+   "file": "voice_messages/audio_2@18-05-2026_23-10-10.ogg",
+   "file_size": 479437,
+   "media_type": "voice_message",
+   "mime_type": "audio/ogg",
+   "duration_seconds": 123,
+   "text": "",
+   "text_entities": []
+  },
+  {
+   "id": 363004,
+   "type": "message",
+   "date": "2026-05-24T20:28:16",
+   "date_unixtime": "1779636496",
+   "from": "Denis Gazizov",
+   "from_id": "user293720342",
+   "file": "voice_messages/audio_3@24-05-2026_20-28-16.ogg",
+   "file_size": 532513,
+   "media_type": "voice_message",
+   "mime_type": "audio/ogg",
+   "duration_seconds": 136,
+   "text": "",
+   "text_entities": []
+  },
+  {
+   "id": 363322,
+   "type": "message",
+   "date": "2026-05-25T22:23:32",
+   "date_unixtime": "1779729812",
+   "from": "Denis Gazizov",
+   "from_id": "user293720342",
+   "file": "voice_messages/audio_4@25-05-2026_22-23-32.ogg",
+   "file_size": 540689,
+   "media_type": "voice_message",
+   "mime_type": "audio/ogg",
+   "duration_seconds": 140,
+   "text": "",
+   "text_entities": []
+  }
+ ]
+}
