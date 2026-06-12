@@ -74,7 +74,7 @@
             .brand-tag { font-size: 8px; letter-spacing: 1.5px; }
             .card-footer .sub { font-size: 9px; }
             .card-specs { font-size: 8px; }
-            .gallery-dot { width: 4px; height: 4px; gap: 4px; }
+            .gallery-dot { width: 6px; height: 6px; }
             .card-footer .price { font-size: 11px; }
             .wa-bubble { bottom: 16px; right: 16px; font-size: 9px; padding: 9px 13px; }
             .trust-bar { display: none; }
@@ -182,9 +182,9 @@
         .card-gallery { position: relative; overflow: hidden; }
         .card-gallery img { display: none; width: 100%; }
         .card-gallery img.active { display: block; }
-        .gallery-nav { position: absolute; bottom: 7px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; pointer-events: none; }
-        .gallery-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; pointer-events: all; transition: background .15s; }
-        .gallery-dot.active { background: rgba(255,255,255,0.92); }
+        .gallery-nav { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; pointer-events: none; z-index: 10; }
+        .gallery-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,0,0,0.22); box-shadow: 0 0 0 1.5px rgba(255,255,255,0.7); cursor: pointer; pointer-events: all; transition: background .15s, box-shadow .15s; }
+        .gallery-dot.active { background: rgba(0,0,0,0.75); box-shadow: 0 0 0 1.5px rgba(255,255,255,0.9); }
     </style>
 </head>
 <body>
