@@ -6621,6 +6621,8 @@
                 el = el.nextElementSibling;
             }
             grp.style.display = has ? '' : 'none';
+            var desc = grp.nextElementSibling;
+            if (desc && desc.classList.contains('model-desc')) desc.style.display = has ? '' : 'none';
         });
 
         noRes.style.display = total === 0 ? 'block' : 'none';
