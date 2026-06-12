@@ -302,7 +302,7 @@ def make_gallery(img_tag, new_src, extras):
     if new_src:
         main = re.sub(r'src="[^"]+"', f'src="{new_src}"', main)
 
-    extra_imgs = '\n'.join(f'<img src="{e}" alt="">' for e in extras)
+    extra_imgs = '\n'.join(f'<img loading="eager" src="{e}" alt="">' for e in extras)
 
     n = len(extras) + 1
     dots = ''.join(

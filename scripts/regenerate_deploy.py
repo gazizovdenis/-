@@ -21,8 +21,8 @@ html = re.sub(
 after_local = html.count('src="images/')
 print(f"Local paths converted: {after_local}")
 
-# Add loading=lazy to img tags that don't already have it
-html = re.sub(r'<img (?!loading)', '<img loading="lazy" ', html)
+# Add loading=lazy to img tags that don't already have a loading attribute
+html = re.sub(r'<img (?![^>]*\bloading=)', '<img loading="lazy" ', html)
 
 with open(dst, 'w', encoding='utf-8') as f:
     f.write(html)
