@@ -39,7 +39,7 @@
         .card { position: relative; overflow: hidden; display: block; text-decoration: none; color: inherit; }
         .card img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; background: #f9f9f9; display: block; padding: 8%; box-sizing: border-box; transition: transform .35s ease; }
         .card:hover img { transform: scale(1.06); }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,0) 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; transition: opacity .3s ease; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,0) 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
         .card:hover .card-overlay { opacity: 1; }
         .card-overlay-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
         .card-overlay h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
