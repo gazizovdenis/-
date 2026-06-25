@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Карусель — ИИ в жизни предпринимателя</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #444;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.slide {
+  width: 1080px;
+  height: 1080px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide.active { display: flex; }
+
+.dark { background: #0F0F0F; color: white; }
+.white { background: #FFFFFF; color: #111; }
+
+.tag {
+  font-size: 15px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  font-weight: 500;
+}
+.dark .tag { color: #555; }
+.white .tag { color: #BDBDBD; }
+
+.divider {
+  width: 48px;
+  height: 3px;
+  margin-bottom: 50px;
+}
+.dark .divider { background: #333; }
+.white .divider { background: #ECECEC; }
+
+.body {
+  font-size: 30px;
+  line-height: 1.75;
+}
+.dark .body { color: #C0C0C0; }
+.white .body { color: #333; }
+
+.footer {
+  position: absolute;
+  bottom: 60px;
+  left: 100px;
+  right: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+}
+.dark .footer { color: #444; }
+.white .footer { color: #CCC; }
+
+/* COVER */
+.cover-eyebrow {
+  font-size: 15px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #444;
+  margin-bottom: 36px;
+}
+
+.headline {
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1.08;
+  margin-bottom: 36px;
+  letter-spacing: -1px;
+  color: white;
+}
+
+.cover-sub {
+  font-size: 26px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* CONTROLS */
+.controls {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  font-family: -apple-system, sans-serif;
+}
+
+.controls button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls button:hover { background: rgba(255,255,255,0.28); }
+
+.hint {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.55);
+  color: rgba(255,255,255,0.8);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-family: -apple-system, sans-serif;
+}
+</style>
+</head>
+<body>
+
+<div class="hint">← → для навигации &nbsp;|&nbsp; Скриншоти каждый слайд</div>
+
+<!-- 1. ОБЛОЖКА -->
+<div class="slide dark active" id="s1">
+  <div class="cover-eyebrow">Личный опыт</div>
+  <div class="headline">ИИ в жизни<br>предпри&shy;нимателя</div>
+  <div class="cover-sub">Честно — хорошее и плохое</div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>1 / 8</span>
+  </div>
+</div>
+
+<!-- 2. ВСТУПЛЕНИЕ -->
+<div class="slide white" id="s2">
+  <div class="tag">С чего начал</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:27px">
+    Вокруг ИИ невероятный хайп. Когда слушаю — возникает ощущение, что я уже на обочине и все меня обогнали в его применении.<br><br>
+    Начал изучать плотно примерно полгода назад. Проводил по 3-4 часа, задавал вопросы, обстукивал идеи по бизнесу. Интересно, захватывает. Но по факту ничего полезного не сделал — использовал как поисковик. А он, зараза, такой хороший, постоянно подбадривает😅 Осознал это месяц назад. Просто тупо тратил время.
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>2 / 8</span>
+  </div>
+</div>
+
+<!-- 3. ВСТРЕЧИ -->
+<div class="slide dark" id="s3">
+  <div class="tag">Хорошее →</div>
+  <div class="divider"></div>
+  <div class="body">
+    Встречи. Раньше после каждого звонка садился и сам писал итоги, задачи, кому что. Теперь скидываю запись — получаю структурированный разбор с таблицей задач и ответственными. Одно это уже сэкономило кучу времени.
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>3 / 8</span>
+  </div>
+</div>
+
+<!-- 4. ТРЕНИРОВКИ + ЗДОРОВЬЕ -->
+<div class="slide white" id="s4">
+  <div class="tag">Хорошее →</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:27px">
+    Тренировки. Получил план, скидываю сон и сами тренировки — пишет рекомендации. Крутая замена тренеру, если вы не готовитесь к мастеру спорта, а делаете это для себя и здоровья. Для высших достижений — только как доп инструмент.<br><br>
+    Здоровье. Регулярно отправляю анализы. Выдаёт базу. Та же история — для профилактики ок, есть реальная проблема — к врачу.
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>4 / 8</span>
+  </div>
+</div>
+
+<!-- 5. НАЙМ -->
+<div class="slide dark" id="s5">
+  <div class="tag">Хорошее →</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:27px">
+    Найм. Создаю с помощью него вакансию, сортирую резюме. ИИ помогает с вопросами к кандидатам, их же ответы сам анализирует и фильтрует. Таким образом тратится сильно меньше времени на отсев и на собеседование приходят те, кто нужен.<br><br>
+    Наверное есть что-то еще, сразу не вспомню.
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>5 / 8</span>
+  </div>
+</div>
+
+<!-- 6. МИНУСЫ -->
+<div class="slide white" id="s6">
+  <div class="tag">Минусы</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:27px">
+    Теперь минусы)<br><br>
+    Как бы ты не пытался получить адекватную обратную связь, ИИ все равно убедит тебя, что ты все делаешь правильно)) Риск залипнуть и общаться с ним нереально большой. Я делал так несколько месяцев)
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>6 / 8</span>
+  </div>
+</div>
+
+<!-- 7. АНТИКЕЙС -->
+<div class="slide dark" id="s7">
+  <div class="tag">Антикейс</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:27px">
+    Антикейс с шампунем. Решил подобрать шампунь, есть небольшая проблема с перхотью. Подобрал мне дорогой за 2 000р. Я пробую — не подходит. Он говорит, да, точно, тебе нужен другой, ты же не говорил что у тебя волосы короткие. Предлагает за 3 000р)) как понимает я послал его к черту))
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>7 / 8</span>
+  </div>
+</div>
+
+<!-- 8. ИТОГ -->
+<div class="slide white" id="s8">
+  <div class="tag">Итог</div>
+  <div class="divider"></div>
+  <div class="body" style="font-size:26px">
+    Сейчас самое сложное — не разобраться как пользоваться, а перестать делать руками то, что уже давно можно не делать. Пока не очень получается. Иногда хочется самому — типа быстрее. Но понимаю, что так и останусь там же.<br><br>
+    Это инструмент. Как хороший сотрудник — если умеешь ставить задачи, сделает хорошо. Если нет — не поможет.<br><br>
+    Как у вас успехи с ИИ? Есть чем поделиться или пока так, на уровне "слышу", "изучаю", "не про меня"))?
+  </div>
+  <div class="footer">
+    <span>@denisgazizov</span>
+    <span>8 / 8</span>
+  </div>
+</div>
+
+<!-- НАВИГАЦИЯ -->
+<div class="controls">
+  <button onclick="go(-1)">←</button>
+  <span id="ctr">1 / 8</span>
+  <button onclick="go(1)">→</button>
+</div>
+
+<script>
+let cur = 1;
+const total = 8;
+
+function go(dir) {
+  const next = cur + dir;
+  if (next < 1 || next > total) return;
+  document.getElementById('s' + cur).classList.remove('active');
+  cur = next;
+  document.getElementById('s' + cur).classList.add('active');
+  document.getElementById('ctr').textContent = cur + ' / ' + total;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+});
+</script>
+
+</body>
+</html>
