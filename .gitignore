@@ -9,6 +9,7 @@ desktop.ini
 *.mp4
 *.wav
 *.ogg
+*.webm
 
 # Локальные настройки Claude Code
 .claude/settings.local.json
