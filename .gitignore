@@ -9,6 +9,33 @@ desktop.ini
 *.mp4
 *.wav
 *.ogg
+*.webm
+*.weba
+
+# Таблицы — хранятся локально
+*.xlsx
+*.xls
+*.ods
+
+# Изображения — хранятся локально
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.heic
+*.tiff
+*.bmp
+
+# Архивы — хранятся локально
+*.rar
+*.zip
+*.7z
+*.tar
+*.gz
+
+# PDF — хранятся локально
+*.pdf
 
 # Локальные настройки Claude Code
 .claude/settings.local.json
