@@ -1,0 +1,217 @@
+{
+  "main": {
+    "id": "b7346b50e1761a2a",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d585bc052733ac7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e7187bc9a28053a8",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Граф"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "48f0ebf38b7b0491",
+    "type": "split",
+    "children": [
+      {
+        "id": "1161641875be2436",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f8317141ee118e05",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "79859f1ef3ea16cc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "d1082ca8bafc1b53",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e13e45f885a5bb04",
+    "type": "split",
+    "children": [
+      {
+        "id": "e6340775dabb376d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8b4012789705c6e7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки"
+            }
+          },
+          {
+            "id": "035f5967d4852e49",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки"
+            }
+          },
+          {
+            "id": "8dafe66f3a6d47cc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "aba34963bebbcb2d",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "89821e484eb7d2f9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false
+    }
+  },
+  "active": "e7187bc9a28053a8",
+  "lastOpenFiles": [
+    "Хранилище/raw/01_Маркетплейс/Встречи/26.05.2026 встреча 4.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/26.05.2026 встреча 3.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/26.05.2026 встреча 2.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/26.05.2026 встреча 1.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/улица Менделеева 2.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/улица Менделеева 5.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/улица Менделеева 4.m4a",
+    "Хранилище/raw/01_Маркетплейс/Встречи/улица Менделеева 6.m4a",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (6).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (5).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (4).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (2).jpg",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (1).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)/1 (1).jpg",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565/1 (6).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565/1 (5).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565/1 (4).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565/1 (1).png",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565 (1)",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/СН 5565",
+    "Хранилище/raw/01_Маркетплейс/Сайт/Очки 2/ВЕ3173 (1)",
+    "Хранилище/raw/08_Личное/Выводы дня/2026-05-26_выводы-дня_transcript.md",
+    "Хранилище/wiki/держатель-для-украшений.md",
+    "Хранилище/raw/01_Маркетплейс/Конвеер новинок/Держатель для украшений/Держатель для украшений.md",
+    "Хранилище/wiki/эмберг.md",
+    "Хранилище/wiki/светлана.md",
+    "Хранилище/wiki/нестор.md",
+    "Хранилище/wiki/2026-05-25-встреча-нестор.md",
+    "Хранилище/wiki/2026-05-25-планерка-технопродукт.md",
+    "Хранилище/wiki/ремонт-серводрайверов.md",
+    "Хранилище/wiki/2026-05-21-ремонт-серводрайверов.md",
+    "Хранилище/wiki/2026-05-20-эмберг-план-продаж.md",
+    "Хранилище/wiki/2026-05-19-собеседование-операционный-директор.md",
+    "Хранилище/wiki/2026-05-18-технопродукт-все-встречи.md",
+    "scheme.md"
+  ]
+}

@@ -39,3 +39,8 @@ desktop.ini
 
 # Локальные настройки Claude Code
 .claude/settings.local.json
+
+# Тяжёлые архивы
+*.rar
+*.zip
+*.7z
