@@ -11,6 +11,7 @@ desktop.ini
 *.ogg
 *.webm
 *.weba
+*.mov
 
 # Таблицы — хранятся локально
 *.xlsx
