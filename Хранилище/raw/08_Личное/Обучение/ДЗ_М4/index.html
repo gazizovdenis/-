@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denis Gazizov — Предприниматель</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    :root{
+      --bg:#0d0d0d;--surface:#181818;--surface2:#1f1f1f;
+      --border:#242424;--accent:#F67F2F;--accent-dim:rgba(246,127,47,.1);
+      --text:#f2f2f2;--muted:#6b6b6b;
+    }
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+    /* NAV */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:50;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 48px;height:64px;
+      background:rgba(13,13,13,.88);backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+    }
+    .logo{font-weight:800;font-size:16px;letter-spacing:-.3px;color:var(--text);text-decoration:none}
+    .nav-links{display:flex;gap:36px;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;align-items:center;padding:96px 48px 80px}
+    .hero-inner{max-width:1120px;margin:0 auto;width:100%}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;border-radius:999px;
+      background:var(--accent-dim);border:1px solid rgba(246,127,47,.22);
+      font-size:11px;font-weight:700;color:var(--accent);
+      letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px;
+    }
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    h1{
+      font-size:clamp(52px,8vw,96px);font-weight:900;line-height:1.0;
+      letter-spacing:-3px;margin-bottom:28px;
+    }
+    h1 em{font-style:normal;color:var(--accent)}
+    .sub{
+      font-size:clamp(16px,1.8vw,21px);color:var(--muted);
+      max-width:560px;line-height:1.65;margin-bottom:44px;
+    }
+    .cta{display:flex;gap:14px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:14px 28px;border-radius:10px;
+      font-size:15px;font-weight:600;text-decoration:none;transition:all .2s;
+    }
+    .btn-fill{
+      background:var(--accent);color:#fff;
+      box-shadow:0 6px 24px rgba(246,127,47,.28);
+    }
+    .btn-fill:hover{background:#e87220;transform:translateY(-2px);box-shadow:0 10px 36px rgba(246,127,47,.38)}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .btn-ghost:hover{border-color:rgba(246,127,47,.4);transform:translateY(-2px)}
+
+    .kpis{
+      display:flex;gap:56px;flex-wrap:wrap;
+      margin-top:72px;padding-top:48px;border-top:1px solid var(--border);
+    }
+    .kpi-num{font-size:40px;font-weight:800;color:var(--accent);line-height:1}
+    .kpi-lbl{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500}
+
+    /* SECTIONS */
+    .wrap{max-width:1120px;margin:0 auto;padding:100px 48px}
+    .eyebrow{
+      font-size:11px;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+    }
+    h2{
+      font-size:clamp(30px,4vw,52px);font-weight:800;
+      line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px;
+    }
+    .lead{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    /* ABOUT */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px;align-items:start}
+    .about-body p{color:var(--muted);font-size:16px;line-height:1.8;margin-bottom:18px}
+    .about-body p b{color:var(--text)}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+    .chip{
+      padding:8px 16px;border-radius:8px;
+      background:var(--surface);border:1px solid var(--border);
+      font-size:13px;font-weight:500;color:var(--muted);
+    }
+    .feature-list{display:flex;flex-direction:column;gap:14px}
+    .feature{
+      padding:18px 22px;background:var(--surface);
+      border:1px solid var(--border);border-radius:12px;transition:border-color .2s;
+    }
+    .feature:hover{border-color:rgba(246,127,47,.35)}
+    .feature-name{font-size:14px;font-weight:600;margin-bottom:4px}
+    .feature-txt{font-size:12px;color:var(--muted);line-height:1.6}
+
+    /* PROJECTS */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+    .card{
+      padding:30px;background:var(--surface);border:1px solid var(--border);
+      border-radius:14px;position:relative;overflow:hidden;
+      transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .card::after{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s;
+    }
+    .card:hover{transform:translateY(-5px);border-color:rgba(246,127,47,.3);box-shadow:0 20px 48px rgba(0,0,0,.4)}
+    .card:hover::after{transform:scaleX(1)}
+    .card-ico{font-size:28px;margin-bottom:18px}
+    .card-name{font-size:18px;font-weight:700;margin-bottom:10px}
+    .card-txt{font-size:13px;color:var(--muted);line-height:1.7}
+    .card-tag{
+      display:inline-block;margin-top:18px;
+      padding:4px 10px;border-radius:6px;
+      background:var(--accent-dim);color:var(--accent);
+      font-size:11px;font-weight:600;letter-spacing:.3px;
+    }
+
+    /* CONTACT */
+    .contact-section{background:var(--surface);border-top:1px solid var(--border)}
+    .contact-inner{
+      max-width:1120px;margin:0 auto;
+      padding:100px 48px;text-align:center;
+    }
+    .contact-inner h2{margin-bottom:12px}
+    .contact-inner .lead{margin:0 auto 44px}
+    .contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .contact-link{
+      display:flex;align-items:center;gap:10px;
+      padding:13px 22px;border:1px solid var(--border);
+      border-radius:10px;background:var(--bg);
+      color:var(--text);text-decoration:none;
+      font-size:14px;font-weight:500;transition:border-color .2s,transform .2s;
+    }
+    .contact-link:hover{border-color:rgba(246,127,47,.4);transform:translateY(-2px)}
+
+    footer{
+      text-align:center;padding:28px;
+      color:var(--muted);font-size:13px;border-top:1px solid var(--border);
+    }
+
+    @media(max-width:768px){
+      nav{padding:0 20px}
+      .nav-links{display:none}
+      .hero{padding:96px 20px 60px}
+      .wrap{padding:64px 20px}
+      .about-grid,.cards{grid-template-columns:1fr}
+      h1{letter-spacing:-2px}
+      .kpis{gap:28px}
+      .contact-inner{padding:64px 20px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Denis Gazizov</a>
+  <ul class="nav-links">
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Предприниматель · Россия</div>
+    <h1>Denis<br><em>Gazizov</em></h1>
+    <p class="sub">Строю бизнесы на маркетплейсах и&nbsp;B2B-рынке. Фокус на&nbsp;скорости, экспериментах и&nbsp;AI-автоматизации процессов.</p>
+    <div class="cta">
+      <a href="mailto:denisgazizov@gmail.com" class="btn btn-fill">Написать&nbsp;→</a>
+      <a href="#projects" class="btn btn-ghost">Смотреть проекты</a>
+    </div>
+    <div class="kpis">
+      <div>
+        <div class="kpi-num">180M₽</div>
+        <div class="kpi-lbl">Выручка B2B / год</div>
+      </div>
+      <div>
+        <div class="kpi-num">+30%</div>
+        <div class="kpi-lbl">Рост год к году</div>
+      </div>
+      <div>
+        <div class="kpi-num">14</div>
+        <div class="kpi-lbl">Человек в командах</div>
+      </div>
+      <div>
+        <div class="kpi-num">2</div>
+        <div class="kpi-lbl">Действующих бизнеса</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="about" class="wrap">
+  <p class="eyebrow">Обо мне</p>
+  <h2>Предприниматель с фокусом<br>на росте и&nbsp;системности</h2>
+  <div class="about-grid">
+    <div class="about-body">
+      <p>Управляю двумя бизнесами: <b>товарный маркетплейс</b> (WB, Ozon, выход на Ozon&nbsp;Global) и <b>B2B-поставки</b> запчастей для промышленного оборудования.</p>
+      <p>В&nbsp;каждом проекте команда из&nbsp;<b>7&nbsp;человек</b>. Строю системы, которые работают без ручного контроля каждого шага.</p>
+      <p>Активно внедряю <b>AI-инструменты</b>&nbsp;— от транскрибации переговоров до полной автоматизации операционных процессов.</p>
+      <div class="chips">
+        <span class="chip">Маркетплейсы</span>
+        <span class="chip">B2B-продажи</span>
+        <span class="chip">AI-автоматизации</span>
+        <span class="chip">Юнит-экономика</span>
+        <span class="chip">Управление командой</span>
+      </div>
+    </div>
+    <div class="feature-list">
+      <div class="feature">
+        <div class="feature-name">Маркетплейсы</div>
+        <div class="feature-txt">WB, Ozon, Ozon Global — юнит-экономика, конвейер тестирования ниш, оптимизация карточек и рекламы</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">B2B-поставки</div>
+        <div class="feature-txt">Промышленные клиенты: Эфес, Балтика, Сибур, Башнефть. Запчасти из Китая, санкционные товары</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">AI-автоматизации</div>
+        <div class="feature-txt">Claude Code, LLM-агенты, автоматизация операционных задач и работы с информацией</div>
+      </div>
+      <div class="feature">
+        <div class="feature-name">Построение команд</div>
+        <div class="feature-txt">Найм, систематизация, Trello и Google Docs, операционное управление без ручного контроля</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="projects" class="wrap" style="padding-top:0">
+  <p class="eyebrow">Проекты</p>
+  <h2>Что строю прямо сейчас</h2>
+  <p class="lead">Два действующих бизнеса и личные разработки — всё в активной фазе роста.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-ico">🛍️</div>
+      <div class="card-name">Маркетплейс</div>
+      <p class="card-txt">Товарный бизнес на WB и Ozon. Очки, ортезы, новые маржинальные ниши. Активный запуск на Ozon Global — 139&nbsp;заказов за первые 28&nbsp;дней.</p>
+      <span class="card-tag">WB · Ozon · Ozon Global</span>
+    </div>
+    <div class="card">
+      <div class="card-ico">⚙️</div>
+      <div class="card-name">Технопродукт</div>
+      <p class="card-txt">B2B-поставки запчастей для линий розлива и санкционных позиций. Клиенты&nbsp;— Эфес, Балтика, Башнефть, Сибур. Выручка 180&nbsp;млн₽/год, рост 30%.</p>
+      <span class="card-tag">B2B · Промышленность</span>
+    </div>
+    <div class="card">
+      <div class="card-ico">🤖</div>
+      <div class="card-name">AI-автоматизации</div>
+      <p class="card-txt">Личные проекты по автоматизации процессов: транскрибация встреч, база знаний, LLM-агенты для операционных задач и аналитики.</p>
+      <span class="card-tag">Claude · AI · Automation</span>
+    </div>
+  </div>
+</div>
+
+<div id="contact" class="contact-section">
+  <div class="contact-inner">
+    <p class="eyebrow">Контакты</p>
+    <h2>Давайте пообщаемся</h2>
+    <p class="lead">Открыт к партнёрству, поставкам, интересным проектам и коллаборациям.</p>
+    <div class="contact-links">
+      <a href="mailto:denisgazizov@gmail.com" class="contact-link">✉️&nbsp;&nbsp;denisgazizov@gmail.com</a>
+      <a href="#" class="contact-link">💬&nbsp;&nbsp;Telegram</a>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Denis Gazizov</footer>
+
+</body>
+</html>

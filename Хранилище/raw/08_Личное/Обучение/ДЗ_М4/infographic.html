@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бизнес-дашборд · Май 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f0efec;
+      display:flex;justify-content:center;
+      padding:40px 20px;min-height:100vh;
+    }
+    .infographic{
+      width:1200px;background:#fff;
+      border-radius:20px;padding:44px 52px 40px;
+      box-shadow:0 4px 48px rgba(0,0,0,.08);
+    }
+
+    /* HEADER */
+    .header{
+      display:flex;justify-content:space-between;align-items:flex-end;
+      margin-bottom:32px;padding-bottom:22px;
+      border-bottom:2px solid #f0eeec;
+    }
+    .header-title{font-size:24px;font-weight:800;color:#111;letter-spacing:-.4px}
+    .header-sub{font-size:13px;color:#999;margin-top:4px}
+    .header-period{
+      font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+      color:#F67F2F;background:rgba(246,127,47,.1);
+      padding:6px 14px;border-radius:8px;text-transform:uppercase;letter-spacing:1.5px;
+    }
+
+    /* KPI ROW */
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .kpi{
+      padding:20px 22px;border-radius:12px;
+      border:1px solid #ebebeb;background:#fafaf9;
+    }
+    .kpi-label{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+    .kpi-value{
+      font-family:'JetBrains Mono',monospace;
+      font-size:34px;font-weight:700;color:#111;line-height:1;
+    }
+    .kpi-value.orange{color:#F67F2F}
+    .kpi-sub{font-size:11px;color:#aaa;margin-top:6px}
+    .kpi-delta{
+      display:inline-flex;align-items:center;gap:3px;
+      margin-top:8px;font-size:12px;font-weight:700;color:#22c55e;
+    }
+
+    /* CHART */
+    .chart-wrap{
+      background:#fafaf9;border:1px solid #ebebeb;
+      border-radius:12px;padding:20px 24px;margin-bottom:18px;
+    }
+    .chart-title{font-size:12px;font-weight:600;color:#888;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+    canvas{display:block;width:100%;height:auto}
+
+    /* BOTTOM ROW */
+    .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+    .mini-card{
+      padding:20px 22px;border-radius:12px;
+      border:1px solid #ebebeb;background:#fafaf9;
+    }
+    .mini-title{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+    .mini-row{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:6px 0;border-bottom:1px solid #f2f2f0;
+    }
+    .mini-row:last-child{border-bottom:none}
+    .mini-key{font-size:12px;color:#666}
+    .mini-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#111}
+    .mini-val.orange{color:#F67F2F}
+
+    /* CONCLUSIONS */
+    .conclusions{
+      padding:20px 24px;
+      background:linear-gradient(135deg,rgba(246,127,47,.07) 0%,rgba(246,127,47,.02) 100%);
+      border:1px solid rgba(246,127,47,.18);border-radius:12px;
+    }
+    .conc-title{font-size:10px;font-weight:700;color:#F67F2F;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+    .conc-list{display:flex;flex-direction:column;gap:5px}
+    .conc-item{font-size:12px;color:#444;line-height:1.55}
+    .conc-item::before{content:'→ ';color:#F67F2F;font-weight:700}
+  </style>
+</head>
+<body>
+<div class="infographic" id="infographic">
+
+  <div class="header">
+    <div>
+      <div class="header-title">Бизнес-дашборд Denis Gazizov</div>
+      <div class="header-sub">Технопродукт (B2B запчасти) и Маркетплейс (WB, Ozon, Ozon Global)</div>
+    </div>
+    <div class="header-period">Май&nbsp;2026</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-label">Выручка B2B / год</div>
+      <div class="kpi-value orange">180M₽</div>
+      <div class="kpi-delta">↑ +30% г/г</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Ozon Global — заказы</div>
+      <div class="kpi-value">139</div>
+      <div class="kpi-sub">за первые 28 дней</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Ozon Global — выручка</div>
+      <div class="kpi-value">123K₽</div>
+      <div class="kpi-sub">чистая прибыль +30K₽</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Команда</div>
+      <div class="kpi-value">14</div>
+      <div class="kpi-sub">7 + 7 человек</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Технопродукт — ежемесячная выручка, млн₽ &nbsp;·&nbsp; январь 2025 — май 2026</div>
+    <canvas id="chart" width="1096" height="200"></canvas>
+  </div>
+
+  <div class="bottom-row">
+    <div class="mini-card">
+      <div class="mini-title">Ozon Global — старт</div>
+      <div class="mini-row"><span class="mini-key">Период</span><span class="mini-val">28 дней</span></div>
+      <div class="mini-row"><span class="mini-key">Выручка</span><span class="mini-val orange">123 000 ₽</span></div>
+      <div class="mini-row"><span class="mini-key">Заказов</span><span class="mini-val">139</span></div>
+      <div class="mini-row"><span class="mini-key">Рекламный бонус Ozon</span><span class="mini-val">30 000 ₽</span></div>
+      <div class="mini-row"><span class="mini-key">Итог после выплат</span><span class="mini-val orange">+30 000 ₽</span></div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-title">Топ новинок по марже</div>
+      <div class="mini-row"><span class="mini-key">Электрощётка беспроводная</span><span class="mini-val orange">46%</span></div>
+      <div class="mini-row"><span class="mini-key">Разделочная доска нерж.</span><span class="mini-val">31.6%</span></div>
+      <div class="mini-row"><span class="mini-key">Антенна наружная</span><span class="mini-val">30%</span></div>
+      <div class="mini-row"><span class="mini-key">Бесконтактный ершик</span><span class="mini-val">23.6%</span></div>
+      <div class="mini-row"><span class="mini-key">Тонометр автоматический</span><span class="mini-val">21%</span></div>
+    </div>
+  </div>
+
+  <div class="conclusions">
+    <div class="conc-title">Выводы</div>
+    <div class="conc-list">
+      <div class="conc-item">Технопродукт растёт устойчиво +30%/год — при таком темпе выручка превысит 230M₽ через год; критический риск — зависимость от Эфеса (50–60% выручки)</div>
+      <div class="conc-item">Ozon Global показал сильный старт: выкуп хороший, экономика сошлась в первый же месяц — есть смысл масштабировать ассортимент</div>
+      <div class="conc-item">Приоритет на лето: электрощётка (маржа 46%) в масштаб + системный поиск новых B2B-клиентов для снижения доли Эфеса</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.fonts.ready.then(() => {
+  const canvas = document.getElementById('chart');
+  const ctx = canvas.getContext('2d');
+
+  const data   = [12.5,12.8,13.5,14.2,14.8,13.9,13.5,14.1,15.2,15.8,16.5,18.2,14.1,15.0,16.3,17.2,17.9];
+  const labels = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек','Янв','Фев','Мар','Апр','Май'];
+  const yearAt = {0:'2025', 12:'2026'};
+
+  const W = canvas.width, H = canvas.height;
+  const pL=52, pR=20, pT=20, pB=48;
+  const cW = W-pL-pR, cH = H-pT-pB;
+  const n = data.length;
+  const xStep = cW / (n-1);
+  const yMin=10, yMax=20;
+
+  const xOf = i => pL + i * xStep;
+  const yOf = v => pT + cH - ((v-yMin)/(yMax-yMin)) * cH;
+
+  // Grid
+  [12,14,16,18,20].forEach(v => {
+    const y = yOf(v);
+    ctx.beginPath();
+    ctx.strokeStyle = v===20 ? '#e8e8e8' : '#f0f0f0';
+    ctx.lineWidth = 1;
+    ctx.moveTo(pL, y); ctx.lineTo(W-pR, y);
+    ctx.stroke();
+    ctx.fillStyle = '#c0c0c0';
+    ctx.font = '11px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(v+'M', pL-8, y+4);
+  });
+
+  // Year divider (between Dec 25 and Jan 26 = index 11.5)
+  const sepX = (xOf(11)+xOf(12))/2;
+  ctx.save();
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(sepX, pT); ctx.lineTo(sepX, pT+cH);
+  ctx.stroke();
+  ctx.restore();
+
+  // Area gradient
+  const grad = ctx.createLinearGradient(0, pT, 0, pT+cH);
+  grad.addColorStop(0, 'rgba(246,127,47,0.16)');
+  grad.addColorStop(1, 'rgba(246,127,47,0.01)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(xOf(0), yOf(data[0]));
+  data.forEach((v,i) => { if(i>0) ctx.lineTo(xOf(i), yOf(v)); });
+  ctx.lineTo(xOf(n-1), pT+cH);
+  ctx.lineTo(xOf(0), pT+cH);
+  ctx.closePath();
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#F67F2F';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.moveTo(xOf(0), yOf(data[0]));
+  data.forEach((v,i) => { if(i>0) ctx.lineTo(xOf(i), yOf(v)); });
+  ctx.stroke();
+
+  // Dots
+  data.forEach((v,i) => {
+    const x=xOf(i), y=yOf(v);
+    ctx.beginPath();
+    ctx.fillStyle = '#fff';
+    ctx.arc(x,y,3.5,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#F67F2F';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x,y,3.5,0,Math.PI*2); ctx.stroke();
+  });
+
+  // Highlight max (Dec 25, index 11)
+  const mi=11, mx=xOf(mi), my=yOf(data[mi]);
+  ctx.beginPath();
+  ctx.fillStyle = '#F67F2F';
+  ctx.arc(mx,my,5.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#F67F2F';
+  ctx.font = '600 11px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('18.2M', mx, my-11);
+
+  // Highlight last point (May 26, index 16)
+  const li=16, lx=xOf(li), ly=yOf(data[li]);
+  ctx.beginPath();
+  ctx.fillStyle = '#F67F2F';
+  ctx.arc(lx,ly,5.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#F67F2F';
+  ctx.font = '600 11px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('17.9M', lx, ly-11);
+
+  // X labels
+  ctx.fillStyle = '#b0b0b0';
+  ctx.font = '11px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  labels.forEach((lbl,i) => ctx.fillText(lbl, xOf(i), pT+cH+16));
+
+  // Year labels
+  ctx.fillStyle = '#F67F2F';
+  ctx.font = '700 11px Inter, sans-serif';
+  Object.entries(yearAt).forEach(([i,y]) => ctx.fillText(y, xOf(+i), pT+cH+32));
+});
+</script>
+</body>
+</html>

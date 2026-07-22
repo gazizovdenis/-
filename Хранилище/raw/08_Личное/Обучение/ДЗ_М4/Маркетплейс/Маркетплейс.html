@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Маркетплейс · automy ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#ED7E2F;
+    --orange-soft:#FFE6D1;
+    --orange-pale:#FFF4E8;
+    --bg:#FFFFFF;
+    --ink:#0F0F0F;
+    --ink2:#6B6B6B;
+    --gray:#F2F0EC;
+    --gray2:#E8E6E0;
+    --line:#E5E3DE;
+    --dark:#0F0F0F;
+    --dark-card:#1A1A1A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#1a1a1a;color:var(--ink);font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{overflow:hidden}
+
+  .stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px}
+  .deck{position:relative;width:min(100vw - 48px, calc((100vh - 48px) * 16 / 9));aspect-ratio:16/9;background:var(--bg);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+
+  .slide{position:absolute;inset:0;padding:44px 60px 60px;display:none;flex-direction:column;background:var(--bg)}
+  .slide.active{display:flex}
+  .slide.dark{background:var(--dark);color:#fff}
+  .slide.dark .head{color:#fff}
+  .slide.dark .head .num{color:#9a9a9a}
+  .slide.dark hr.divider{border-top-color:#2a2a2a}
+  .slide.dark .footer{color:#666}
+
+  .head{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#222}
+  .head .brand{display:flex;align-items:center;gap:14px}
+  .head .brand .logo-mark{height:22px;display:block}
+  .head .brand .logo-mark.dark{display:none}
+  .slide.dark .head .brand .logo-mark.light{display:none}
+  .slide.dark .head .brand .logo-mark.dark{display:block}
+  .head .brand .section-label{color:#888;padding-left:14px;border-left:1px solid var(--line)}
+  .slide.dark .head .brand .section-label{color:#666;border-left-color:#2a2a2a}
+  .head .num{color:#8a8a8a;font-weight:600;letter-spacing:.06em;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .slide hr.divider{border:0;border-top:1px solid var(--line);margin:14px 0 0}
+
+  .body{flex:1;display:flex;flex-direction:column;padding-top:22px;min-height:0}
+
+  .footer{display:none}
+
+  h1{font-weight:900;font-size:80px;line-height:.96;letter-spacing:-.025em;color:var(--ink)}
+  h1.giant{font-size:104px;letter-spacing:-.03em}
+  h1.mega{font-size:120px;line-height:.92;letter-spacing:-.03em}
+  h2{font-weight:900;font-size:58px;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  h3{font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.01em;color:var(--ink)}
+  .slide.dark h1, .slide.dark h2, .slide.dark h3{color:#fff}
+  .accent{color:var(--orange)}
+
+  .sub{margin-top:14px;font-size:20px;color:var(--ink2);max-width:1040px;line-height:1.45;font-weight:500}
+  .slide.dark .sub{color:#bdbdbd}
+  .small{font-size:17px;color:var(--ink2);font-weight:500;line-height:1.5}
+
+  .title-row{display:grid;grid-template-columns:1.5fr .8fr;gap:48px;align-items:stretch;flex:1;min-height:0}
+  .title-left{display:flex;flex-direction:column;justify-content:space-between}
+  .module-card{background:var(--dark);border-radius:22px;padding:34px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+  .module-card .top{font-size:14px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+  .module-card .dot{width:10px;height:10px;border-radius:50%;background:var(--orange);margin-top:10px}
+  .module-card .num{font-size:200px;font-weight:900;line-height:.85;color:#fff;text-align:right;margin-top:auto;letter-spacing:-.04em}
+  .module-card .tag{border-top:1px solid rgba(255,255,255,.18);padding-top:14px;margin-top:18px}
+  .module-card .tag b{font-size:17px;font-weight:800}
+  .module-card .tag span{display:block;font-size:12px;color:#a0a0a0;margin-top:4px;letter-spacing:.08em;text-transform:uppercase}
+
+  .quote-wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .quote-sub{color:#a0a0a0;font-size:20px;margin-top:28px;max-width:1000px;line-height:1.45;font-weight:500}
+  .quote-sub.lime{color:var(--orange)}
+
+  .center{display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+
+  .bricks{display:grid;gap:12px;margin-top:18px}
+  .brick{border-radius:16px;padding:22px 30px;display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:center;background:#fff;border:1px solid var(--line)}
+  .brick .n{font-size:34px;font-weight:900;color:var(--ink2);letter-spacing:-.02em}
+  .brick .ttl{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--ink);line-height:1.2}
+  .brick .desc{font-size:20px;color:var(--ink2);line-height:1.45}
+  .brick.accent{background:var(--orange);border-color:transparent;color:#fff}
+  .brick.accent .n{color:#fff;opacity:.85}
+  .brick.accent .ttl{color:#fff}
+  .brick.accent .desc{color:rgba(255,255,255,.94)}
+  .brick.soft{background:var(--orange-soft);border-color:transparent}
+  .brick.gray{background:var(--gray);border-color:transparent}
+  .brick.dark{background:var(--dark);border-color:transparent;color:#fff}
+  .brick.dark .n{color:var(--orange)}
+  .brick.dark .ttl{color:#fff}
+  .brick.dark .desc{color:#bdbdbd}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+  .grid4 .card{border-radius:20px;padding:26px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line)}
+  .grid4 .card .k{font-size:54px;font-weight:900;letter-spacing:-.03em;color:var(--ink2);line-height:1}
+  .grid4 .card .t{font-size:22px;font-weight:800;margin-top:8px;color:var(--ink)}
+  .grid4 .card .d{font-size:20px;color:var(--ink2);margin-top:12px;line-height:1.45}
+  .grid4 .card.accent{background:var(--orange);border-color:transparent}
+  .grid4 .card.accent .k{color:rgba(255,255,255,.7)}
+  .grid4 .card.accent .t, .grid4 .card.accent .d{color:#fff}
+
+  .grid2x2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .grid2x2 .card{border-radius:16px;padding:24px 28px;background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:60px 1fr;gap:18px;align-items:center}
+  .grid2x2 .card .k{font-size:30px;font-weight:900;color:var(--ink2)}
+  .grid2x2 .card .t{font-size:22px;font-weight:800;line-height:1.2;margin-bottom:6px}
+  .grid2x2 .card .d{font-size:20px;color:var(--ink2);line-height:1.45}
+  .grid2x2 .full{grid-column:1/-1;background:var(--orange);border-color:transparent;color:#fff}
+  .grid2x2 .full .k{color:rgba(255,255,255,.7)}
+  .grid2x2 .full .t{color:#fff}
+  .grid2x2 .full .d{color:rgba(255,255,255,.94);font-size:20px}
+
+  .col2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;flex:1;min-height:0}
+  .col2 .card{border-radius:18px;padding:28px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);overflow:hidden}
+  .col2 .card.soft{background:var(--orange-soft);border-color:transparent}
+  .col2 .card.gray{background:var(--gray);border-color:transparent}
+  .col2 .card.accent{background:var(--orange);border-color:transparent;color:#fff}
+  .col2 .card.accent .lbl{color:rgba(255,255,255,.8)}
+  .col2 .card.accent h3{color:#fff}
+  .col2 .card.accent ul li{color:rgba(255,255,255,.95)}
+  .col2 .card h3{font-size:26px}
+  .col2 .card .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--orange);margin-bottom:10px}
+  .col2 .card ul{font-size:20px;line-height:1.55;padding-left:22px;margin-top:10px;color:var(--ink)}
+  .col2 .card ul li{margin-bottom:8px}
+  .col2 .card.dark{background:var(--dark);border-color:transparent;color:#fff}
+  .col2 .card.dark h3{color:#fff}
+  .col2 .card.dark ul li{color:#bdbdbd}
+
+  .col3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;flex:1;min-height:0}
+  .col3 .card{border-radius:20px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;background:#fff;border:1px solid var(--line)}
+  .col3 .card.soft{background:var(--orange-soft);border-color:transparent}
+  .col3 .card.gray{background:var(--gray);border-color:transparent}
+  .col3 .card.accent{background:var(--orange);color:#fff;border-color:transparent}
+  .col3 .card.accent h3{color:#fff}
+
+  .tree{background:var(--dark);color:#e0e0d8;border-radius:18px;padding:30px 38px;font-family:'JetBrains Mono',Menlo,monospace;font-size:19px;line-height:1.8;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .tree pre{margin:0}
+  .tree .or{color:var(--orange)}
+  .tree .g{color:#8c8c8c;margin-left:8px}
+
+  .steps{display:grid;gap:10px;margin-top:18px}
+  .step{display:grid;grid-template-columns:54px 1fr 100px;gap:18px;align-items:center;padding:16px 22px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+  .step .num{font-size:28px;font-weight:900;color:var(--orange);letter-spacing:-.02em}
+  .step .t{font-size:20px;font-weight:800}
+  .step .d{font-size:18px;color:var(--ink2);margin-top:4px;line-height:1.45}
+  .step .time{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink2);text-align:right;font-weight:700}
+
+  .steps2col{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(3,1fr);gap:14px 20px;margin-top:18px;flex:1;min-height:0}
+  .steps2col .step{display:grid;grid-template-columns:60px 1fr;gap:18px;align-items:center;padding:18px 24px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+  .steps2col .step.start{background:var(--orange-soft);border-color:transparent}
+  .steps2col .step .num{font-size:36px;font-weight:900;color:var(--orange);letter-spacing:-.03em}
+  .steps2col .step .t{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:5px;color:var(--ink)}
+  .steps2col .step .d{font-size:18px;color:var(--ink2);line-height:1.45}
+
+  .flow{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:18px;flex:1;justify-content:flex-start}
+  .flow .node{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 30px;font-size:20px;font-weight:700;color:var(--ink)}
+  .flow .node.accent{background:var(--orange);border-color:transparent;color:#fff}
+  .flow .node.dark{background:var(--dark);color:#fff;border-color:transparent}
+  .flow .arrow{font-size:20px;color:var(--ink2);line-height:1}
+
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:600;color:var(--ink)}
+  .pill.accent{background:var(--orange);color:#fff;border-color:transparent}
+
+  .code{background:#0d0d0d;color:#e0e0d8;border-radius:14px;padding:18px 26px;font-family:'JetBrains Mono',Menlo,monospace;font-size:18px;line-height:1.65;display:inline-block}
+  .code .or{color:var(--orange)}
+  .code .c{color:#7a7a7a}
+
+  .foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+  .foot-grid .lbl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#888;font-weight:700}
+  .foot-grid .at{font-size:34px;font-weight:800;color:var(--orange);margin-top:8px;letter-spacing:-.01em}
+  .foot-grid .desc{color:#a0a0a0;margin-top:6px;font-size:18px}
+
+  .nav{position:fixed;left:0;right:0;bottom:14px;display:flex;align-items:center;justify-content:center;gap:14px;z-index:10;pointer-events:none}
+  .nav button{pointer-events:auto;background:rgba(255,255,255,.95);border:none;border-radius:999px;padding:10px 16px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);font-size:13px;color:var(--ink)}
+  .nav .ind{pointer-events:auto;background:rgba(0,0,0,.7);color:#fff;border-radius:999px;padding:9px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
+
+  @page { size: 13.333in 7.5in; margin: 0; }
+  @media print {
+    html, body { background:#fff; overflow:visible; margin:0; padding:0; width:13.333in; height:auto }
+    .stage { display:block; padding:0; width:13.333in; height:auto; position:static; inset:auto }
+    .deck { position:static; width:13.333in; height:auto; border-radius:0; box-shadow:none; aspect-ratio:auto; background:transparent }
+    .slide {
+      position:relative !important; display:flex !important;
+      flex-direction:column; width:13.333in; height:7.5in;
+      inset:auto !important; padding:44px 60px 60px;
+      page-break-after:always; break-after:page;
+      page-break-inside:avoid; break-inside:avoid;
+      overflow:hidden;
+    }
+    .slide:last-child { page-break-after:auto; break-after:auto }
+    .nav { display:none !important }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="deck" id="deck">
+
+    <!-- СЛАЙД 1 — ТИТУЛ -->
+    <section class="slide active">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">проект</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body title-row">
+        <div class="title-left">
+          <div>
+            <h1 class="giant">Маркет-<br>плейс</h1>
+            <div class="sub" style="margin-top:22px;font-size:22px">Товарный бизнес на WB и Ozon — системный подход к тестированию ниш и выходу на глобальный рынок</div>
+          </div>
+          <div class="pills">
+            <div class="pill">Wildberries</div>
+            <div class="pill">Ozon</div>
+            <div class="pill accent">Ozon Global</div>
+            <div class="pill">Команда 7 чел.</div>
+          </div>
+        </div>
+        <div class="module-card">
+          <div>
+            <div class="top">Проект</div>
+            <div class="dot"></div>
+          </div>
+          <div class="num">01</div>
+          <div class="tag">
+            <b>Denis Gazizov</b>
+            <span>маркетплейс · 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 2 — ТЕЗИС (тёмный) -->
+    <section class="slide dark">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">принцип</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body quote-wrap">
+        <h1 style="color:#fff;font-size:84px;font-weight:900;line-height:1;letter-spacing:-.025em">
+          Тестируй быстро —<br>масштабируй<br>только <span class="accent">проверенное</span>
+        </h1>
+        <div class="quote-sub lime" style="margin-top:30px;font-size:21px">
+          Каждая ниша проходит фильтр по данным. Без цифр — деньги не вкладываем.
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 3 — ПРОБЛЕМА (bricks) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">возможность</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>Почему здесь есть деньги</h2>
+        <div class="sub">Конкуренты работают интуитивно — мы по данным</div>
+        <div class="bricks" style="gap:14px;margin-top:24px">
+          <div class="brick" style="padding:22px 32px">
+            <div class="n">01</div>
+            <div><div class="ttl">Офлайн перегрет</div><div class="desc">Наценка ×3–5 к себестоимости. Покупатели ищут альтернативу — маркетплейсы растут</div></div>
+          </div>
+          <div class="brick" style="padding:22px 32px">
+            <div class="n">02</div>
+            <div><div class="ttl">Слабые карточки у конкурентов</div><div class="desc">Большинство продавцов не оптимизируют SEO и рекламу — ниша открыта</div></div>
+          </div>
+          <div class="brick accent" style="padding:22px 32px">
+            <div class="n">03</div>
+            <div><div class="ttl">Прямой завод в Китае</div><div class="desc">Маржа 20–46% против 5–12% у тех, кто работает через перекупщиков</div></div>
+          </div>
+        </div>
+        <div class="small" style="margin-top:20px">→ рынок открыт — выигрывает тот, кто считает юнит-экономику до запуска</div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 4 — 4 КРИТЕРИЯ (grid4) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">критерии</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body" style="justify-content:center">
+        <h2>4 фильтра. Не прошёл — не берём</h2>
+        <div class="sub">Любое нарушение — ниша закрывается без обсуждений</div>
+        <div class="grid4" style="margin-top:30px;align-items:stretch">
+          <div class="card">
+            <div class="k">80%</div>
+            <div class="t">Выкуп</div>
+            <div class="d">Минимальный выкуп товара покупателями. Ниже — возвраты убивают маржу</div>
+          </div>
+          <div class="card">
+            <div class="k">20%</div>
+            <div class="t">Маржа</div>
+            <div class="d">После всех затрат: логистика, реклама, комиссия МП</div>
+          </div>
+          <div class="card">
+            <div class="k">500K</div>
+            <div class="t">Ёмкость ₽/мес</div>
+            <div class="d">Минимальный объём рынка. Маленькая ниша не масштабируется</div>
+          </div>
+          <div class="card accent">
+            <div class="k">15%</div>
+            <div class="t">ДРР к 45 дню</div>
+            <div class="d">Доля рекламных расходов — цель к концу тестового периода</div>
+          </div>
+        </div>
+        <div class="small" style="margin-top:18px">→ из 27 проанализированных категорий прошли фильтр — 3 к запуску, 4 на проверке</div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 5 — 6 ШАГОВ (steps2col) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">процесс</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>От идеи до продаж: 6 шагов</h2>
+        <div class="sub">Полный цикл — 45–60 дней. Одновременно работает несколько тестов.</div>
+        <div class="steps2col">
+          <div class="step"><div class="num">01</div><div><div class="t">Скрининг ниш</div><div class="d">Анализ 20–30 категорий по 4 критериям: выкуп, маржа, ёмкость, конкуренция</div></div></div>
+          <div class="step"><div class="num">02</div><div><div class="t">Прямой поставщик</div><div class="d">Контакт с заводом в Китае — без посредников. Atlas копирует карточки одной кнопкой</div></div></div>
+          <div class="step"><div class="num">03</div><div><div class="t">Тестовая партия</div><div class="d">50–80 ед., рекламный бюджет ×1.5 к закупке</div></div></div>
+          <div class="step"><div class="num">04</div><div><div class="t">Запуск на МП</div><div class="d">FBO + реклама. Цель — топ-50 по ключевому запросу</div></div></div>
+          <div class="step"><div class="num">05</div><div><div class="t">Замер метрик</div><div class="d">Выкуп ≥80%, ДРР ≤15% через 30–45 дней — решение по нише</div></div></div>
+          <div class="step start"><div class="num">06</div><div><div class="t">Масштаб</div><div class="d">Партия ×5–10, расширение ассортимента и рекламного бюджета</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 6 — OZON GLOBAL ТЕЗИС (тёмный) -->
+    <section class="slide dark">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">ozon global</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body quote-wrap">
+        <h1 style="color:#fff;font-size:80px;font-weight:900;line-height:1.0;letter-spacing:-.025em">
+          Тот же ассортимент.<br>Новый рынок.<br><span class="accent">Ноль конкурентов</span> из РФ.
+        </h1>
+        <div class="quote-sub lime" style="margin-top:30px;font-size:21px">
+          Китайский аккаунт Ozon: без ВЭД, СПП 15–20%, рекламный бонус 30К₽ при старте
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 7 — ПРОДУКТ (col3) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">продукт</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>Что продаём сейчас</h2>
+        <div class="sub">Три уровня зрелости: зрелые, растущие, тестовые</div>
+        <div class="col3" style="margin-top:14px;align-items:stretch">
+          <div class="card soft" style="padding:24px 26px;flex-direction:column;gap:12px">
+            <h3>Очки & Ортезы</h3>
+            <div style="font-size:16px;line-height:1.6;color:var(--ink);font-weight:500">
+              Основа бизнеса. WB + Ozon.<br>
+              Бандажи: <b>38 заказов/день</b> в пике.<br>
+              Наколенники: 8–11 отзывов, второй раунд самовыкупов.
+            </div>
+            <div style="font-size:13px;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Зрелая</div>
+          </div>
+          <div class="card gray" style="padding:24px 26px;flex-direction:column;gap:12px">
+            <h3>Новые категории</h3>
+            <div style="font-size:16px;line-height:1.6;color:var(--ink);font-weight:500">
+              27 категорий проанализировано.<br>
+              <b>Электрощётка</b> (маржа 46%) — к запуску.<br>
+              Тонометр, 3Д-ручка — на старте.
+            </div>
+            <div style="font-size:13px;color:var(--ink2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Растущая</div>
+          </div>
+          <div class="card accent" style="padding:24px 26px;flex-direction:column;gap:12px">
+            <h3>Ray-Ban копии</h3>
+            <div style="font-size:16px;line-height:1.6;color:#fff;font-weight:500">
+              Прямой производитель (не перекупщик).<br>
+              Оригинальная упаковка.<br>
+              Тест через Ozon Global.
+            </div>
+            <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Тестовая</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 8 — РЕЗУЛЬТАТЫ OZON GLOBAL (grid4) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">результаты</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body" style="justify-content:center">
+        <h2>Ozon Global: первые 28 дней</h2>
+        <div class="sub">Старт сильнее ожиданий — экономика сошлась с первого месяца</div>
+        <div class="grid4" style="margin-top:28px;align-items:stretch">
+          <div class="card">
+            <div class="k">28</div>
+            <div class="t">дней</div>
+            <div class="d">Стартовый период теста</div>
+          </div>
+          <div class="card">
+            <div class="k">139</div>
+            <div class="t">заказов</div>
+            <div class="d">Выкуп хороший по всем SKU</div>
+          </div>
+          <div class="card">
+            <div class="k">123К</div>
+            <div class="t">выручка ₽</div>
+            <div class="d">+ 30К бонус от Ozon при старте</div>
+          </div>
+          <div class="card accent">
+            <div class="k">+30К</div>
+            <div class="t">прибыль ₽</div>
+            <div class="d">Чистый итог после всех затрат</div>
+          </div>
+        </div>
+        <div class="small" style="margin-top:20px">→ следующий шаг: расширение ассортимента ×3 — те же критерии, новые SKU</div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 9 — БИЗНЕС-МОДЕЛЬ (col2) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">бизнес-модель</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>Наш подход против обычного</h2>
+        <div class="col2">
+          <div class="card gray">
+            <div class="lbl">Обычный продавец</div>
+            <h3>Интуиция + перекупщик</h3>
+            <ul>
+              <li>Берёт товар через посредника +20–30%</li>
+              <li>Маржа 5–12%</li>
+              <li>Запускает без анализа ниши</li>
+              <li>Реклама «на глаз»</li>
+              <li>Теряет деньги на невыкупе</li>
+            </ul>
+          </div>
+          <div class="card dark">
+            <div class="lbl" style="color:var(--orange)">Наш подход</div>
+            <h3>Данные + прямой завод</h3>
+            <ul>
+              <li>Прямой контакт с заводом в Китае</li>
+              <li>Маржа 20–46%</li>
+              <li>Скрининг по 4 критериям до закупки</li>
+              <li>Реклама ×1.5 к закупке, ДРР ≤15%</li>
+              <li>Тест 45–60 дней → решение по данным</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 10 — РЫНОК (col3) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">рынок</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>Три канала продаж</h2>
+        <div class="sub">Один ассортимент — несколько независимых рынков</div>
+        <div class="col3" style="margin-top:14px;align-items:stretch">
+          <div class="card gray" style="padding:24px 26px;flex-direction:column;gap:10px">
+            <h3>Wildberries</h3>
+            <div style="font-size:16px;line-height:1.6;color:var(--ink);font-weight:500">
+              Крупнейший МП России. Основной канал продаж. Активные категории: очки, ортезы, новинки.
+            </div>
+            <div style="font-size:13px;color:var(--ink2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Основной · Активно</div>
+          </div>
+          <div class="card gray" style="padding:24px 26px;flex-direction:column;gap:10px">
+            <h3>Ozon Россия</h3>
+            <div style="font-size:16px;line-height:1.6;color:var(--ink);font-weight:500">
+              Второй по ёмкости маркетплейс РФ. Параллельные тесты и масштаб по тем же SKU.
+            </div>
+            <div style="font-size:13px;color:var(--ink2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Основной · Активно</div>
+          </div>
+          <div class="card accent" style="padding:24px 26px;flex-direction:column;gap:10px">
+            <h3>Ozon Global</h3>
+            <div style="font-size:16px;line-height:1.6;color:#fff;font-weight:500">
+              Китайский аккаунт. Тот же ассортимент — новый рынок без конкуренции от российских продавцов.
+            </div>
+            <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:auto">Старт ✓ · 139 заказов / 28 дн.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 11 — ПЛАНЫ (bricks) -->
+    <section class="slide">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">планы</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body">
+        <h2>Следующие 90 дней</h2>
+        <div class="sub">Три фронта роста — запускаются параллельно</div>
+        <div class="bricks" style="gap:14px;margin-top:24px">
+          <div class="brick" style="padding:22px 32px">
+            <div class="n">01</div>
+            <div>
+              <div class="ttl">Электрощётка беспроводная</div>
+              <div class="desc">Маржа 46%, выкуп 83.7%, нет барьеров — лучший кандидат. Партия 50–80 ед. в июне</div>
+            </div>
+          </div>
+          <div class="brick" style="padding:22px 32px">
+            <div class="n">02</div>
+            <div>
+              <div class="ttl">Ozon Global ×3</div>
+              <div class="desc">Расширить ассортимент втрое: новые SKU через Atlas, те же критерии отбора</div>
+            </div>
+          </div>
+          <div class="brick accent" style="padding:22px 32px">
+            <div class="n">03</div>
+            <div>
+              <div class="ttl">Ray-Ban тест — новая точка роста</div>
+              <div class="desc">Прямой производитель найден. Тест через Ozon Global — если выкуп хороший, масштабируем</div>
+            </div>
+          </div>
+        </div>
+        <div class="small" style="margin-top:20px">→ параллельно: тонометр (регистрация РУ) и 3Д-ручка (сертификат детского товара)</div>
+      </div>
+    </section>
+
+    <!-- СЛАЙД 12 — ФИНАЛ (тёмный, center) -->
+    <section class="slide dark">
+      <div class="head">
+        <div class="brand">
+          <img class="logo-mark light" src="automy-ai-wordmark-display-64-orange.png" alt="automy ai">
+          <img class="logo-mark dark"  src="automy-ai-logo-light-on-dark.png"        alt="automy ai">
+          <span class="section-label">контакты</span>
+        </div>
+        <span class="num"></span>
+      </div>
+      <hr class="divider">
+      <div class="body center">
+        <h1 style="color:#fff;font-size:74px;text-align:center;font-weight:900;line-height:.98;letter-spacing:-.025em">
+          МАРКЕТПЛЕЙС РАСТЁТ —<br>ДАВАЙТЕ <span class="accent">ОБСУДИМ</span>
+        </h1>
+        <div class="quote-sub" style="text-align:center;margin-top:28px;font-size:21px;max-width:900px">
+          Открыт к партнёрству по поставкам, новым нишам и совместным проектам на маркетплейсах
+        </div>
+        <div class="foot-grid" style="grid-template-columns:1fr 1fr">
+          <div>
+            <div class="lbl">автор</div>
+            <div class="at">Denis Gazizov</div>
+            <div class="desc">denisgazizov@gmail.com</div>
+          </div>
+          <div>
+            <div class="lbl">проект</div>
+            <div class="at">Маркетплейс</div>
+            <div class="desc">WB · Ozon · Ozon Global · 2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="nav">
+  <button id="prev">← назад</button>
+  <div class="ind"><span id="cur">1</span> / <span id="tot">12</span></div>
+  <button id="next">далее →</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const cur = document.getElementById('cur');
+  const tot = document.getElementById('tot');
+  tot.textContent = slides.length;
+  const totalPadded = String(slides.length).padStart(2,'0');
+  slides.forEach((s, idx) => {
+    const numEl = s.querySelector('.head .num');
+    if (numEl) numEl.textContent = String(idx+1).padStart(2,'0') + ' / ' + totalPadded;
+  });
+  let i = 0;
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+    cur.textContent = i+1;
+    history.replaceState(null,'','#'+(i+1));
+  }
+  document.getElementById('prev').onclick = ()=>show(i-1);
+  document.getElementById('next').onclick = ()=>show(i+1);
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') show(i+1);
+    if(e.key==='ArrowLeft'||e.key==='PageUp') show(i-1);
+    if(e.key==='Home') show(0);
+    if(e.key==='End') show(slides.length-1);
+  });
+  const m = location.hash.match(/^#(\d+)$/);
+  if(m){ show(parseInt(m[1],10)-1); }
+</script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Маркетплейс — Denis Gazizov</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0e0e0e;--surface:#181818;--surface2:#1e1e1e;
+      --border:#282828;--accent:#F67F2F;--accent-dim:rgba(246,127,47,.1);
+      --text:#f2f2f2;--muted:#666;
+    }
+    html,body{width:100%;height:100%;overflow:hidden;
+      font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}
+
+    /* DECK */
+    .deck{position:relative;width:100vw;height:100vh}
+    .slide{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;justify-content:center;
+      padding:80px 100px;
+      opacity:0;transform:translateX(40px);
+      transition:opacity .4s ease,transform .4s ease;
+      pointer-events:none;
+    }
+    .slide.active{opacity:1;transform:none;pointer-events:auto}
+    .slide.leaving{opacity:0;transform:translateX(-40px)}
+
+    /* NAV */
+    .nav-bar{
+      position:fixed;bottom:40px;left:50%;transform:translateX(-50%);
+      display:flex;align-items:center;gap:20px;z-index:100;
+      background:rgba(20,20,20,.85);backdrop-filter:blur(16px);
+      border:1px solid var(--border);border-radius:100px;
+      padding:10px 24px;
+    }
+    .nav-btn{
+      width:36px;height:36px;border-radius:50%;
+      border:1px solid var(--border);background:transparent;
+      color:var(--text);font-size:16px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:border-color .2s,background .2s;
+    }
+    .nav-btn:hover{border-color:var(--accent);background:var(--accent-dim)}
+    .nav-progress{font-size:13px;font-weight:600;color:var(--muted);min-width:56px;text-align:center}
+    .dots{display:flex;gap:6px}
+    .dot{
+      width:6px;height:6px;border-radius:50%;
+      background:var(--border);cursor:pointer;transition:background .2s,transform .2s;
+    }
+    .dot.active{background:var(--accent);transform:scale(1.3)}
+
+    /* TYPOGRAPHY */
+    .eyebrow{
+      font-size:11px;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+    }
+    h1{font-size:clamp(56px,7vw,88px);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:0}
+    h1 em{font-style:normal;color:var(--accent)}
+    h2{font-size:clamp(32px,4.5vw,60px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:20px}
+    h2 em{font-style:normal;color:var(--accent)}
+    .body{font-size:18px;color:var(--muted);line-height:1.65;max-width:640px}
+    .body b{color:var(--text)}
+    .mono{font-family:'JetBrains Mono',monospace}
+
+    /* COMMON ELEMENTS */
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;border-radius:999px;margin-bottom:28px;
+      background:var(--accent-dim);border:1px solid rgba(246,127,47,.2);
+      font-size:11px;font-weight:700;color:var(--accent);
+      text-transform:uppercase;letter-spacing:1.5px;
+    }
+    .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+    /* GRID LAYOUTS */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:40px}
+    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+    .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+
+    /* CARDS */
+    .card{
+      padding:24px;background:var(--surface);
+      border:1px solid var(--border);border-radius:12px;
+      transition:border-color .2s;
+    }
+    .card-num{
+      font-family:'JetBrains Mono',monospace;
+      font-size:32px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:6px;
+    }
+    .card-lbl{font-size:12px;color:var(--muted);font-weight:500}
+    .card-title{font-size:16px;font-weight:700;margin-bottom:6px}
+    .card-body{font-size:13px;color:var(--muted);line-height:1.6}
+
+    /* LIST */
+    .feat-list{display:flex;flex-direction:column;gap:14px;margin-top:32px}
+    .feat{
+      display:flex;align-items:flex-start;gap:14px;
+      padding:16px 20px;background:var(--surface);
+      border:1px solid var(--border);border-radius:10px;
+    }
+    .feat-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+    .feat-name{font-size:14px;font-weight:600;margin-bottom:3px}
+    .feat-txt{font-size:12px;color:var(--muted);line-height:1.6}
+
+    /* HIGHLIGHT BOX */
+    .highlight{
+      padding:28px 32px;
+      background:linear-gradient(135deg,rgba(246,127,47,.12),rgba(246,127,47,.04));
+      border:1px solid rgba(246,127,47,.25);border-radius:14px;
+      margin-top:32px;
+    }
+    .highlight-num{
+      font-family:'JetBrains Mono',monospace;
+      font-size:52px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:8px;
+    }
+    .highlight-lbl{font-size:14px;color:var(--muted)}
+
+    /* TABLE */
+    .data-table{width:100%;border-collapse:collapse;margin-top:28px;font-size:13px}
+    .data-table th{
+      text-align:left;padding:10px 16px;
+      background:var(--surface);border-bottom:1px solid var(--border);
+      font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;
+    }
+    .data-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text)}
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table .orange{color:var(--accent);font-weight:600;font-family:'JetBrains Mono',monospace}
+    .data-table .green{color:#22c55e;font-weight:600}
+
+    /* SLIDE-SPECIFIC BACKGROUNDS */
+    .slide-title-bg{background:radial-gradient(ellipse 70% 60% at 65% 50%,rgba(246,127,47,.07) 0%,transparent 70%)}
+    .slide-dark-bg{background:var(--bg)}
+
+    /* STEP INDICATORS */
+    .steps{display:flex;gap:0;margin-top:40px;position:relative}
+    .step{flex:1;padding:20px 16px;background:var(--surface);border:1px solid var(--border);position:relative}
+    .step:not(:last-child){border-right:none}
+    .step:first-child{border-radius:10px 0 0 10px}
+    .step:last-child{border-radius:0 10px 10px 0}
+    .step-num{
+      font-family:'JetBrains Mono',monospace;
+      font-size:24px;font-weight:700;color:var(--accent);margin-bottom:8px;
+    }
+    .step-name{font-size:13px;font-weight:700;margin-bottom:4px}
+    .step-txt{font-size:12px;color:var(--muted);line-height:1.5}
+
+    /* TEAM CARDS */
+    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}
+    .team-card{
+      padding:20px;background:var(--surface);
+      border:1px solid var(--border);border-radius:10px;text-align:center;
+    }
+    .team-avatar{
+      width:48px;height:48px;border-radius:50%;
+      background:var(--accent-dim);border:2px solid rgba(246,127,47,.2);
+      font-size:20px;display:flex;align-items:center;justify-content:center;
+      margin:0 auto 10px;
+    }
+    .team-role{font-size:13px;font-weight:600;margin-bottom:3px}
+    .team-desc{font-size:11px;color:var(--muted)}
+
+    /* FINAL SLIDE */
+    .final-cta{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:16px 32px;border-radius:12px;margin-top:36px;
+      background:var(--accent);color:#fff;
+      font-size:16px;font-weight:700;text-decoration:none;
+      transition:background .2s,transform .2s;
+    }
+    .final-cta:hover{background:#e87220;transform:translateY(-2px)}
+    .contact-row{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap}
+    .contact-item{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 18px;border:1px solid var(--border);
+      border-radius:8px;font-size:13px;color:var(--muted);
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar{
+      position:fixed;top:0;left:0;height:2px;
+      background:var(--accent);transition:width .4s ease;z-index:200;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide slide-title-bg active" data-slide="1">
+    <div class="badge"><span class="badge-dot"></span>Проект</div>
+    <h1>Маркет-<br>плейс<br><em>Denis G.</em></h1>
+    <p style="font-size:18px;color:var(--muted);margin-top:24px;max-width:480px">
+      Товарный бизнес на WB и Ozon — от тестирования ниш до масштаба на глобальном рынке
+    </p>
+    <div style="display:flex;gap:40px;margin-top:56px;padding-top:40px;border-top:1px solid var(--border)">
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Формат</div>
+        <div style="font-size:16px;font-weight:700;margin-top:4px">FBO + FBS</div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Команда</div>
+        <div style="font-size:16px;font-weight:700;margin-top:4px">7 человек</div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Рынки</div>
+        <div style="font-size:16px;font-weight:700;margin-top:4px">РФ + Глобал</div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Год старта</div>
+        <div style="font-size:16px;font-weight:700;margin-top:4px">2022</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PROBLEM -->
+  <div class="slide" data-slide="2">
+    <div class="eyebrow">Проблема</div>
+    <h2>Рынок очков в офлайне <em>перегрет</em> и непрозрачен</h2>
+    <div class="two-col">
+      <div>
+        <p class="body">
+          Покупатели <b>переплачивают ×3–5</b> за очки в офлайн-магазинах. Онлайн-сегмент растёт, но большинство продавцов на маркетплейсах работают с перекупщиками и <b>не знают своих цифр</b>.
+        </p>
+        <div class="feat-list" style="margin-top:24px">
+          <div class="feat">
+            <div class="feat-icon">💸</div>
+            <div>
+              <div class="feat-name">Ценовые накрутки офлайна</div>
+              <div class="feat-txt">Розница накручивает ×3–5 к себестоимости, покупатель не видит альтернативы</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">📦</div>
+            <div>
+              <div class="feat-name">Слабые карточки конкурентов</div>
+              <div class="feat-txt">Большинство продавцов не оптимизируют карточки и рекламу — ниша открыта</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🔗</div>
+            <div>
+              <div class="feat-name">Работа через перекупщиков</div>
+              <div class="feat-txt">Игроки покупают через посредников, теряя 20–30% маржи</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight">
+        <div class="highlight-num">×3–5</div>
+        <div class="highlight-lbl">средняя наценка к себестоимости<br>в офлайн-рознице</div>
+        <div style="margin-top:24px;border-top:1px solid rgba(246,127,47,.2);padding-top:20px">
+          <div class="highlight-num" style="font-size:36px">80%</div>
+          <div class="highlight-lbl">покупателей смотрят<br>на маркетплейсах перед покупкой</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: SOLUTION -->
+  <div class="slide" data-slide="3">
+    <div class="eyebrow">Решение</div>
+    <h2>Прямые поставки из Китая +<br><em>системный конвейер</em> тестирования</h2>
+    <div class="three-col">
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">🏭</div>
+        <div class="card-title">Прямой производитель</div>
+        <div class="card-body">Работаем напрямую с заводами, без перекупщиков — маржа 20–46% вместо 8–12%</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">📊</div>
+        <div class="card-title">Аналитика перед стартом</div>
+        <div class="card-body">Каждая ниша проходит проверку: выкуп ≥80%, маржа ≥20%, ёмкость ≥500K₽/мес</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">🚀</div>
+        <div class="card-title">Масштаб через данные</div>
+        <div class="card-body">Тест 50–80 ед. → метрики → решение за 45–60 дней. Работает — масштабируем</div>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:28px;display:flex;gap:48px;align-items:center">
+      <div>
+        <div class="highlight-num">46%</div>
+        <div class="highlight-lbl">максимальная маржа<br>в текущем портфеле</div>
+      </div>
+      <div style="width:1px;background:rgba(246,127,47,.2);align-self:stretch"></div>
+      <div>
+        <div class="highlight-num">27</div>
+        <div class="highlight-lbl">категорий проанализировано<br>за один цикл скрининга</div>
+      </div>
+      <div style="width:1px;background:rgba(246,127,47,.2);align-self:stretch"></div>
+      <div>
+        <div class="highlight-num">45–60</div>
+        <div class="highlight-lbl">дней до решения<br>по каждой нише</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: HOW IT WORKS -->
+  <div class="slide" data-slide="4">
+    <div class="eyebrow">Как работает</div>
+    <h2>Конвейер: поиск → анализ →<br>тест → <em>масштаб</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-name">Скрининг ниш</div>
+        <div class="step-txt">Анализ 20–30 категорий по выкупу, марже, ёмкости и конкуренции. Инструменты: MPStats, WB Supplier</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-name">Поиск производителя</div>
+        <div class="step-txt">Прямой контакт с заводами в Китае (не перекупщики). Atlas — копирует карточки в Ozon Global одной кнопкой</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-name">Тест</div>
+        <div class="step-txt">Партия 50–80 ед., реклама ×1.5 к закупке, срок 45–60 дней. Цель: выкуп ≥80%, ДРР ≤15%</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-name">Масштаб</div>
+        <div class="step-txt">Метрики сошлись → увеличиваем партию и рекламный бюджет, выводим в топ-50 по ключевым запросам</div>
+      </div>
+    </div>
+    <p class="body" style="margin-top:28px">
+      Параллельно работает несколько тестов — <b>воронка постоянно заполнена</b> новыми нишами.
+    </p>
+  </div>
+
+  <!-- SLIDE 5: PRODUCT -->
+  <div class="slide" data-slide="5">
+    <div class="eyebrow">Продукт сейчас</div>
+    <h2>Портфель растёт <em>каждый квартал</em></h2>
+    <div class="two-col">
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Категория</th>
+              <th>Статус</th>
+              <th>Маржа</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Солнцезащитные очки</td>
+              <td class="green">Активно</td>
+              <td class="orange">28–35%</td>
+            </tr>
+            <tr>
+              <td>Лучезапястные бандажи</td>
+              <td class="green">Активно</td>
+              <td class="orange">~25%</td>
+            </tr>
+            <tr>
+              <td>Наколенники</td>
+              <td style="color:#F67F2F;font-weight:600">Разгон</td>
+              <td class="orange">~22%</td>
+            </tr>
+            <tr>
+              <td>Электрощётка беспров.</td>
+              <td style="color:#3b82f6;font-weight:600">К запуску</td>
+              <td class="orange">46%</td>
+            </tr>
+            <tr>
+              <td>Ray-Ban копии</td>
+              <td style="color:#3b82f6;font-weight:600">Тест</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-icon">🕶️</div>
+            <div>
+              <div class="feat-name">Очки — основа</div>
+              <div class="feat-txt">Стартовая категория с наработанными поставщиками и карточками</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🏋️</div>
+            <div>
+              <div class="feat-name">Ортезы — рост</div>
+              <div class="feat-txt">38 заказов/день в пике. Бандажи заканчиваются — дозаказ уже в процессе</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">⚡</div>
+            <div>
+              <div class="feat-name">Электрощётка — звезда</div>
+              <div class="feat-txt">Маржа 46%, выкуп 83.7% — лучший кандидат следующего квартала</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: OZON GLOBAL RESULTS -->
+  <div class="slide" data-slide="6">
+    <div class="eyebrow">Первые результаты</div>
+    <h2>Ozon Global — старт <em>сильнее</em> ожиданий</h2>
+    <div class="four-col">
+      <div class="card">
+        <div class="card-num">28</div>
+        <div class="card-lbl">дней работы</div>
+      </div>
+      <div class="card">
+        <div class="card-num">139</div>
+        <div class="card-lbl">заказов, выкуп хороший</div>
+      </div>
+      <div class="card">
+        <div class="card-num">123K</div>
+        <div class="card-lbl">выручка, ₽</div>
+      </div>
+      <div class="card">
+        <div class="card-num">+30K</div>
+        <div class="card-lbl">чистая прибыль, ₽</div>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:24px">
+      <p style="font-size:16px;line-height:1.7;color:var(--text)">
+        Китайский аккаунт Ozon. <b style="color:var(--accent)">Экономика сошлась в первый же месяц</b> — СПП 15–20%, рекламный бонус 30K₽ от Ozon при старте, 100% локализация без ВЭД.
+      </p>
+      <div style="display:flex;gap:32px;margin-top:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Текущий ассортимент</div>
+          <div style="font-size:14px;font-weight:600;margin-top:4px">Очки + бижутерия + Ray-Ban копии</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Инструмент загрузки</div>
+          <div style="font-size:14px;font-weight:600;margin-top:4px">Atlas (Chrome-плагин)</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Следующий шаг</div>
+          <div style="font-size:14px;font-weight:600;margin-top:4px;color:var(--accent)">Масштаб ассортимента ×3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: BUSINESS MODEL -->
+  <div class="slide" data-slide="7">
+    <div class="eyebrow">Бизнес-модель</div>
+    <h2>Маржа держится за счёт <em>прямых поставок</em></h2>
+    <div class="two-col">
+      <div>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-icon">📦</div>
+            <div>
+              <div class="feat-name">FBO + FBS</div>
+              <div class="feat-txt">Склад маркетплейса для оборачиваемых позиций, FBS для теста — оптимальная логистика</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">💹</div>
+            <div>
+              <div class="feat-name">Маржа 20–46%</div>
+              <div class="feat-txt">Работаем только с нишами, где маржа ≥20%. Прямые поставки из Китая дают преимущество</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">📣</div>
+            <div>
+              <div class="feat-name">Реклама ×1.5 к закупке</div>
+              <div class="feat-txt">Стандарт на тест: рекламный бюджет = 1.5× от суммы закупки. Цель ДРР ≤15%</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🌏</div>
+            <div>
+              <div class="feat-name">Ozon Global — новый канал</div>
+              <div class="feat-txt">СПП 15–20%, один склад, без ВЭД. Тот же ассортимент — новый рынок с нулевой конкуренцией</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title" style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Критерии запуска ниши</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Выкуп</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace">≥ 80%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Маржа</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace">≥ 20%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Ёмкость рынка</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace">≥ 500K₽/мес</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Чек</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace">≥ 500₽</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0">
+              <span style="font-size:13px;color:var(--muted)">ДРР цель</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace">≤ 15%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: MARKET -->
+  <div class="slide" data-slide="8">
+    <div class="eyebrow">Рынок</div>
+    <h2>Маркетплейсы РФ + <em>глобальный</em> выход</h2>
+    <div class="three-col">
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">🇷🇺</div>
+        <div class="card-title">Wildberries</div>
+        <div class="card-body">Крупнейший маркетплейс РФ. Основной канал продаж. Активные категории: очки, ортезы</div>
+        <div style="margin-top:14px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--accent)">Основной · Активно</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">🏪</div>
+        <div class="card-title">Ozon Россия</div>
+        <div class="card-body">Второй по ёмкости маркетплейс. Параллельные тесты и основные SKU</div>
+        <div style="margin-top:14px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--accent)">Основной · Активно</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:14px">🌏</div>
+        <div class="card-title">Ozon Global</div>
+        <div class="card-body">Китайский аккаунт. Тот же ассортимент — новый рынок с минимальной конкуренцией от российских продавцов</div>
+        <div style="margin-top:14px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#22c55e">Старт · 28 дней ✓</div>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:24px;display:flex;gap:48px;align-items:center">
+      <div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Почему маркетплейсы</div>
+        <div style="font-size:15px;font-weight:600">Минимальный порог входа, быстрая проверка гипотез, встроенный трафик от площадки</div>
+      </div>
+      <div style="width:1px;background:rgba(246,127,47,.2);align-self:stretch;flex-shrink:0"></div>
+      <div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Следующий шаг</div>
+        <div style="font-size:15px;font-weight:600;color:var(--accent)">WB Китай (аналог Ozon Global для WB)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: PLANS -->
+  <div class="slide" data-slide="9">
+    <div class="eyebrow">Планы</div>
+    <h2>Ближайшие <em>90 дней</em></h2>
+    <div class="two-col">
+      <div>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-icon">⚡</div>
+            <div>
+              <div class="feat-name">Запуск электрощётки</div>
+              <div class="feat-txt">Лучший кандидат: маржа 46%, выкуп 83.7%, нет барьеров. Партия 50–80 ед. в июне</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🌏</div>
+            <div>
+              <div class="feat-name">Масштаб Ozon Global</div>
+              <div class="feat-txt">Расширить ассортимент ×3, загрузить новые категории через Atlas</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🕶️</div>
+            <div>
+              <div class="feat-name">Ray-Ban копии — тест</div>
+              <div class="feat-txt">Найден прямой производитель, не перекупщик. Тест через Ozon Global</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🔬</div>
+            <div>
+              <div class="feat-name">Тонометр + 3Д ручка</div>
+              <div class="feat-txt">Маржа 20–21%, хороший выкуп. Нужны: РУ для тонометра, сертификат для 3Д ручки</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title" style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px">Пайплайн на квартал</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Электрощётка</span>
+              <span style="font-size:11px;font-weight:700;color:#22c55e;background:rgba(34,197,94,.1);padding:3px 8px;border-radius:4px">СТАРТ ИЮНЬ</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Ozon Global ×3</span>
+              <span style="font-size:11px;font-weight:700;color:#3b82f6;background:rgba(59,130,246,.1);padding:3px 8px;border-radius:4px">В РАБОТЕ</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:13px;color:var(--muted)">Ray-Ban тест</span>
+              <span style="font-size:11px;font-weight:700;color:#F67F2F;background:rgba(246,127,47,.1);padding:3px 8px;border-radius:4px">ТЕСТ</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0">
+              <span style="font-size:13px;color:var(--muted)">Тонометр</span>
+              <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--surface2);padding:3px 8px;border-radius:4px">ПОДГОТОВКА</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: TEAM -->
+  <div class="slide" data-slide="10">
+    <div class="eyebrow">Команда</div>
+    <h2><em>7 человек</em> — каждый закрывает свой контур</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👤</div>
+        <div class="team-role">Руководитель</div>
+        <div class="team-desc">Стратегия, решения по нишам</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📊</div>
+        <div class="team-role">Аналитик</div>
+        <div class="team-desc">Скрининг ниш, юнит-экономика</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🎨</div>
+        <div class="team-role">Контент</div>
+        <div class="team-desc">Карточки, фото, описания</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📣</div>
+        <div class="team-role">Реклама</div>
+        <div class="team-desc">Кабинеты WB и Ozon, ДРР</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📦</div>
+        <div class="team-role">Логистика</div>
+        <div class="team-desc">Поставки, остатки, FBO/FBS</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🇨🇳</div>
+        <div class="team-role">Закупки</div>
+        <div class="team-desc">Поиск заводов, переговоры</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">💬</div>
+        <div class="team-role">Сервис</div>
+        <div class="team-desc">Отзывы, вопросы покупателей</div>
+      </div>
+    </div>
+    <p class="body" style="margin-top:32px">
+      Управление через <b>Trello</b> и <b>Google Docs</b>. Все операционные задачи — без ручного контроля.
+    </p>
+  </div>
+
+  <!-- SLIDE 11: KEY METRICS -->
+  <div class="slide" data-slide="11">
+    <div class="eyebrow">Ключевые цифры</div>
+    <h2>Бизнес в <em>цифрах</em> на май 2026</h2>
+    <div class="four-col">
+      <div class="card">
+        <div class="card-num">30M₽</div>
+        <div class="card-lbl">остаток по цене продажи</div>
+      </div>
+      <div class="card">
+        <div class="card-num">5M₽</div>
+        <div class="card-lbl">остаток по закупу</div>
+      </div>
+      <div class="card">
+        <div class="card-num">38</div>
+        <div class="card-lbl">заказов/день (ортезы, пик)</div>
+      </div>
+      <div class="card">
+        <div class="card-num">46%</div>
+        <div class="card-lbl">макс. маржа в портфеле</div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:20px">
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Площадка</th>
+              <th>Статус</th>
+              <th>Результат</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Wildberries</td><td class="green">Активно</td><td>Основной канал</td></tr>
+            <tr><td>Ozon РФ</td><td class="green">Активно</td><td>Тесты + масштаб</td></tr>
+            <tr><td>Ozon Global</td><td class="green">Старт</td><td class="orange">139 заказов / 28 дн.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight" style="margin-top:0">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Главный вывод</div>
+        <div style="font-size:15px;font-weight:600;line-height:1.6">
+          Конвейер тестирования работает. Ozon Global сходится с первого месяца. Следующий рост — <span style="color:var(--accent)">масштаб проверенных гипотез</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: FINAL -->
+  <div class="slide slide-title-bg" data-slide="12">
+    <div class="eyebrow">Следующий шаг</div>
+    <h2>Давайте обсудим<br><em>сотрудничество</em></h2>
+    <p class="body" style="max-width:520px;margin-top:8px">
+      Открыт к партнёрству по поставкам, совместным нишам и интересным проектам на маркетплейсах.
+    </p>
+    <div class="contact-row">
+      <div class="contact-item">✉️&nbsp; denisgazizov@gmail.com</div>
+      <div class="contact-item">💬&nbsp; Telegram</div>
+    </div>
+    <a href="mailto:denisgazizov@gmail.com" class="final-cta">Написать →</a>
+    <div style="margin-top:64px;padding-top:32px;border-top:1px solid var(--border);display:flex;gap:40px">
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Автор</div>
+        <div style="font-size:16px;font-weight:700">Denis Gazizov</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Проект</div>
+        <div style="font-size:16px;font-weight:700">Маркетплейс</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Год</div>
+        <div style="font-size:16px;font-weight:700">2026</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prev">←</button>
+  <div class="dots" id="dots"></div>
+  <div class="nav-progress" id="progress-text">1 / 12</div>
+  <button class="nav-btn" id="next">→</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+
+  const dotsEl = document.getElementById('dots');
+  const progressText = document.getElementById('progress-text');
+  const progressBar = document.getElementById('progress');
+
+  // Build dots
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    if(idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('leaving');
+    setTimeout(() => { slides[current].classList.remove('leaving'); }, 400);
+    current = idx;
+    slides[current].classList.add('active');
+    // Update dots
+    document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current));
+    progressText.textContent = (current+1) + ' / ' + total;
+    progressBar.style.width = ((current+1)/total*100) + '%';
+  }
+
+  document.getElementById('prev').addEventListener('click', () => goTo(current-1));
+  document.getElementById('next').addEventListener('click', () => goTo(current+1));
+
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1);
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp') goTo(current-1);
+  });
+
+  // Touch swipe
+  let touchX = 0;
+  document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50) goTo(dx < 0 ? current+1 : current-1);
+  });
+
+  // Init progress bar
+  progressBar.style.width = (1/total*100) + '%';
+</script>
+</body>
+</html>
